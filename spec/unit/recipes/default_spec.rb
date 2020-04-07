@@ -17,6 +17,7 @@ describe 'nodejs_nginx::default' do
     end
 
     # INSTALLING:
+
       # Install Nginx
     it 'should install nginx' do
       expect(chef_run).to install_package 'nginx'
@@ -38,12 +39,35 @@ describe 'nodejs_nginx::default' do
       expect(chef_run).to start_service 'nginx'
     end
 
+
     # If we created a new proxy.config file for nginx
-    it 'should create a proxy.conf template in /etc/nginx/site-available' do
-      expect(chef_run).to create_template '/etc/nginx/site-available/proxy.conf'
+    it 'should runs apt-get update' do
+      expect(chef_run).to update_apt_update 'update_sources'
     end
 
-    
+      # 1 TEMPLATE
+    it 'should create a proxy.conf template in /etc/nginx/sites-available' do
+      expect(chef_run).to create_template '/etc/nginx/sites-available/proxy.conf'
+    end
 
+      # 2 CREATE LINK
+    it 'should create symlink of proxy.conf from /etc/nginx/sites-enabled' do
+      expect(chef_run).to create_link('/etc/nginx/sites-enabled/proxy.conf').with_link_type(:symbolic)
+    end
+
+      # 3 DELETE LINK
+    it 'should delete a default.conf link in /etc/nginx/sites-enabled/default' do
+      expect(chef_run).to delete_link '/etc/nginx/sites-enabled/default'
+    end
+
+      # Install pm2
+    it 'should install pm2' do
+      expect(chef_run).to install_package 'pm2'
+    end
+
+      # Install react
+    it 'should install react' do
+      expect(chef_run).to install_package 'react'
+    end
   end
 end
