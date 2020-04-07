@@ -23,7 +23,7 @@ end
 # 1 TEMPLATE
 template '/etc/nginx/sites-available/proxy.conf' do
   source 'proxy.conf.erb'
-  variables proxy_port: nodejs_nginx['nginx']['proxy_port']
+  variables proxy_port: node['nginx']['proxy_port']
   notifies :restart, 'service[nginx]'
 end
 
