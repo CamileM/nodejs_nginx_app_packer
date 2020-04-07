@@ -14,8 +14,6 @@ service 'nginx' do
   action [:enable, :start]
 end
 
-package 'nodejs'
-
 package 'npm'
 
 service 'npm' do
@@ -41,3 +39,12 @@ link '/etc/nginx/sites-enabled/default' do
   action :delete
   notifies :restart, 'service[nginx]'
 end
+
+package 'nodejs'
+
+include_recipe 'nodejs'
+
+# Does not install npm by default
+
+npm_package 'pm2'
+npm_package 'react'
