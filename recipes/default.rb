@@ -14,16 +14,16 @@ service 'nginx' do
   action [:enable, :start]
 end
 
-package 'npm'
-
-service 'npm' do
-  action [:enable, :start]
-end
-
+# package 'npm'
+#
+# service 'npm' do
+#   action [:enable, :start]
+# end
 
 # 1 TEMPLATE
 template '/etc/nginx/sites-available/proxy.conf' do
   source 'proxy.conf.erb'
+  variables proxy_port: nodejs_nginx['nginx']['proxy_port']
   notifies :restart, 'service[nginx]'
 end
 
@@ -40,11 +40,13 @@ link '/etc/nginx/sites-enabled/default' do
   notifies :restart, 'service[nginx]'
 end
 
-package 'nodejs'
+
 
 include_recipe 'nodejs'
 
 # Does not install npm by default
+# package 'nodejs'
+# package 'npm'
 
 npm_package 'pm2'
 npm_package 'react'
