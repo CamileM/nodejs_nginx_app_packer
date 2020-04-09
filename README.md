@@ -15,7 +15,7 @@ To use it important it in your own cookbook and run it in the recipes.
 
 ## Installation Section
 
-- An example of how to install a packet in Ruby. 
+- An example of how to install a packet in Ruby.
 
 ```
 it 'should install nginx' do
